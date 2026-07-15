@@ -1,5 +1,5 @@
 from pathlib import Path
-
+from datetime import datetime
 arquivos = {".png": "Imagens",
             ".jpg": "Imagens",
             ".jpeg": "Imagens",
@@ -56,7 +56,7 @@ arquivos = {".png": "Imagens",
             ".bat": "Executáveis",}
 
 caminho = input("Digite o caminho da pasta que deseja organizar: ")
-
+pasta_script = Path(__file__).parent
 pasta = Path(caminho)
 while not pasta.exists() or not pasta.is_dir():
     if not pasta.exists():
@@ -69,6 +69,7 @@ while not pasta.exists() or not pasta.is_dir():
 
 
 contador_categorias = {}
+caminho_log = pasta_script / "log.txt"
 def descobrir_destino(arquivo, arquivos):
 
         if arquivo.is_file():
@@ -108,20 +109,28 @@ def mostrar_resumo():
     for categoria, quantidade in contador_categorias.items():
         print(f"{categoria}: {quantidade}")
 
+def registrar_log(arquivo,destino, caminho_log):
+     agora = datetime.now()
+     data = agora.strftime("%Y-%m-%d")
+     hora = agora.strftime("%H:%M:%S")
 
+     arquivo_log = f"{data}, {hora}, {arquivo.name}, {arquivo.suffix}, {destino}\n"
+     with open(caminho_log, "a") as log:
+          log.write(arquivo_log)  
 
 for arquivo in pasta.glob("*"):
-        destino = descobrir_destino(arquivo, arquivos)
-        pasta_destino = pasta / destino
+    destino = descobrir_destino(arquivo, arquivos)
+    pasta_destino = pasta / destino
 
-        arquivo_destino = gerar_nome_duplicados(arquivo, pasta_destino)
-        pasta_destino.mkdir(exist_ok=True, parents=True)
-        arquivo.rename(arquivo_destino)
+    arquivo_destino = gerar_nome_duplicados(arquivo, pasta_destino)
+    pasta_destino.mkdir(exist_ok=True, parents=True)
+    arquivo.rename(arquivo_destino)
 
-        atualizar_resumo(destino)
+    atualizar_resumo(destino)
 
-        mostrar_mensagem(arquivo, destino)
+    mostrar_mensagem(arquivo, destino)
 
+    registrar_log(arquivo, destino, caminho_log)
 mostrar_resumo()
         
 
