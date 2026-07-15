@@ -55,43 +55,79 @@ arquivos = {".png": "Imagens",
             ".msi": "Executáveis",
             ".bat": "Executáveis",}
 
-pasta = Path("C:/Users/Usuário/Documents/Organizador_Arquivos/testes")
+caminho = input("Digite o caminho da pasta que deseja organizar: ")
 
-
+pasta = Path(caminho)
+while not pasta.exists() or not pasta.is_dir():
+    if not pasta.exists():
+        print("O caminho informado não existe.")
+    elif not pasta.is_dir():
+        print("O caminho informado não é uma pasta.")
+    caminho = input("Digite o caminho da pasta que deseja organizar: ")
+    pasta = Path(caminho)
+     
 
 
 contador_categorias = {}
-for arquivo in pasta.glob("*"):
-    if arquivo.is_file():
+def descobrir_destino(arquivo, arquivos):
+
+        if arquivo.is_file():
        
-        sufixo = arquivo.suffix
-        destino = arquivos.get(sufixo)
+            sufixo = arquivo.suffix
+            destino = arquivos.get(sufixo)
 
         if destino is None:
             destino = "Outros"
-            pasta_destino = pasta / destino
-        else:
-            pasta_destino = pasta / destino
+        return destino
 
-        contador_categorias[destino] = contador_categorias.get(destino, 0) + 1
-        arquivo_destino = pasta_destino / arquivo.name
-        pasta_destino.mkdir(exist_ok=True, parents=True)
+def gerar_nome_duplicados(arquivo, pasta_destino):
+    arquivo_destino = pasta_destino / arquivo.name
+    numero = 1
+    while arquivo_destino.exists():
+        arquivo_novo = f"{arquivo.stem} ({numero}){arquivo.suffix}"
+        arquivo_destino = pasta_destino / arquivo_novo
 
+        numero += 1
+    return arquivo_destino
 
-        arquivo.rename(arquivo_destino)
-    
+def mostrar_mensagem(arquivo, destino):
         print("✔ Arquivo Organizado com Sucesso!")
         print(f"Arquivo: {arquivo.name}")
         print(f"Pasta:{destino}")
 
-print("\nResumo por categoria:")
+def atualizar_resumo(destino):
+    contador_categorias[destino] = contador_categorias.get(destino, 0) + 1
 
-for categoria, quantidade in contador_categorias.items():
-    print(f"{categoria}: {quantidade}")
+def mostrar_resumo():
+    if not contador_categorias:
+        print("Nenhum arquivo encontrado para organizar.")
+        return
+
+    print("\nResumo por categoria:")
+
+    for categoria, quantidade in contador_categorias.items():
+        print(f"{categoria}: {quantidade}")
 
 
-if not contador_categorias:
-    print("Nenhum arquivo encontrado para organizar.")
+
+for arquivo in pasta.glob("*"):
+        destino = descobrir_destino(arquivo, arquivos)
+        pasta_destino = pasta / destino
+
+        arquivo_destino = gerar_nome_duplicados(arquivo, pasta_destino)
+        pasta_destino.mkdir(exist_ok=True, parents=True)
+        arquivo.rename(arquivo_destino)
+
+        atualizar_resumo(destino)
+
+        mostrar_mensagem(arquivo, destino)
+
+mostrar_resumo()
+        
+
+
+    
+        
     
        
        
