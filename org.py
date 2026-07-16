@@ -71,11 +71,8 @@ while not pasta.exists() or not pasta.is_dir():
 contador_categorias = {}
 caminho_log = pasta_script / "log.txt"
 def descobrir_destino(arquivo, arquivos):
-
-        if arquivo.is_file():
-       
-            sufixo = arquivo.suffix
-            destino = arquivos.get(sufixo)
+        sufixo = arquivo.suffix
+        destino = arquivos.get(sufixo)
 
         if destino is None:
             destino = "Outros"
@@ -109,28 +106,35 @@ def mostrar_resumo():
     for categoria, quantidade in contador_categorias.items():
         print(f"{categoria}: {quantidade}")
 
-def registrar_log(arquivo,destino, caminho_log):
+def registrar_log(arquivo,destino, caminho_log, status):
      agora = datetime.now()
      data = agora.strftime("%Y-%m-%d")
      hora = agora.strftime("%H:%M:%S")
 
-     arquivo_log = f"{data}, {hora}, {arquivo.name}, {arquivo.suffix}, {destino}\n"
+     arquivo_log = f" Caminho original: {arquivo.parent} | {data} {hora}| Arquivo: {arquivo.name}| Tipo: {arquivo.suffix}| Destino: {destino}| Status: {status}\n"
      with open(caminho_log, "a") as log:
           log.write(arquivo_log)  
 
 for arquivo in pasta.glob("*"):
+    if arquivo.is_dir():
+        continue
     destino = descobrir_destino(arquivo, arquivos)
     pasta_destino = pasta / destino
 
     arquivo_destino = gerar_nome_duplicados(arquivo, pasta_destino)
     pasta_destino.mkdir(exist_ok=True, parents=True)
-    arquivo.rename(arquivo_destino)
+    try:
+        arquivo.rename(arquivo_destino)
+        atualizar_resumo(destino)
 
-    atualizar_resumo(destino)
+        mostrar_mensagem(arquivo, destino)
 
-    mostrar_mensagem(arquivo, destino)
+        registrar_log(arquivo, destino, caminho_log, "Sucesso")
 
-    registrar_log(arquivo, destino, caminho_log)
+    except PermissionError:
+        registrar_log(arquivo, destino, caminho_log, "Erro de Permissão")
+    except FileNotFoundError:
+        registrar_log(arquivo, destino, caminho_log, "Erro de arquivo não encontrado")
 mostrar_resumo()
         
 
