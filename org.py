@@ -1,62 +1,14 @@
 from pathlib import Path
 from datetime import datetime
-arquivos = {".png": "Imagens",
-            ".jpg": "Imagens",
-            ".jpeg": "Imagens",
-            ".gif": "Imagens",
-            ".bmp": "Imagens",
-            ".webp": "Imagens",
-            ".svg": "Imagens",
-            ".ico": "Imagens",
-            ".tiff": "Imagens",
-            ".pdf": "PDFs",
-            ".doc": "Documentos",
-            ".docx": "Documentos",
-            ".txt": "Documentos",
-            ".rtf": "Documentos",
-            ".odt": "Documentos",
-            ".xls": "Planilhas",
-            ".xlsx": "Planilhas",
-            ".csv": "Planilhas",
-            ".ods": "Planilhas",
-            ".mp3": "Áudios",
-            ".wav": "Áudios",
-            ".aac": "Áudios",
-            ".flac": "Áudios",
-            ".ogg": "Áudios",
-            ".m4a": "Áudios",
-            ".mp4": "Vídeos",
-            ".avi": "Vídeos",
-            ".mov": "Vídeos",
-            ".mkv": "Vídeos",
-            ".wmv": "Vídeos",
-            ".webm": "Vídeos",
-            ".flv": "Vídeos",
-            ".zip": "Compactados",
-            ".rar": "Compactados",
-            ".7z": "Compactados",
-            ".tar": "Compactados",
-            ".gz": "Compactados",
-            ".py": "Python",
-            ".java": "Java",
-            ".js": "JavaScript",
-            ".ts": "TypeScript",
-            ".html": "HTML",
-            ".css": "CSS",
-            ".cpp": "C++",
-            ".c": "C",
-            ".cs": "C#",
-            ".php": "PHP",
-            ".json": "JSON",
-            ".xml": "XML",
-            ".sql": "SQL",
-            ".md": "Markdown",
-            ".exe": "Executáveis",
-            ".msi": "Executáveis",
-            ".bat": "Executáveis",}
+import json
+
+pasta_script = Path(__file__).parent
+caminho_dict = pasta_script / "config.json"
+
+with open(caminho_dict, "r") as arquivo:
+     arquivos = json.load(arquivo)
 
 caminho = input("Digite o caminho da pasta que deseja organizar: ")
-pasta_script = Path(__file__).parent
 pasta = Path(caminho)
 while not pasta.exists() or not pasta.is_dir():
     if not pasta.exists():
