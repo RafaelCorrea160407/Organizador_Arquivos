@@ -8,7 +8,7 @@
 
 ---
 
-[![Download](https://img.shields.io/badge/Download-v1.0.0-blue?style=for-the-badge)]()
+[![Download](https://img.shields.io/badge/Download-v1.0.0-blue?style=for-the-badge)](https://github.com/RafaelCorrea160407/Organizador_Arquivos/releases/tag/v1.0.0)
 
 ---
 
