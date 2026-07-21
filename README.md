@@ -8,6 +8,23 @@
 
 ---
 
+[![Download](https://img.shields.io/badge/Download-v1.0.0-blue?style=for-the-badge)]()
+
+---
+
+## ⚠️ Aviso do Windows Defender
+
+Como este é um projeto independente e o executável não possui assinatura digital, o Windows pode exibir um aviso de segurança na primeira execução.
+
+Para executar:
+
+1. Clique em **Mais informações**.
+2. Clique em **Executar assim mesmo**.
+
+O código-fonte está disponível neste repositório para consulta.
+
+---
+
 ## ✨ Funcionalidades
 
 - 📁 Seleção da pasta por interface gráfica.
