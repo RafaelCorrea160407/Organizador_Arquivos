@@ -1,1 +1,2 @@
 2026-07-16, 13:34:59, Currículo.pdf, .pdf, PDFs
+ Caminho original: C:\Users\Usuário\Documents\Organizador_Arquivos\testes | 2026-07-21 17:12:08| Arquivo: .orgignore| Tipo: | Destino: Outros| Status: Sucesso

@@ -1,23 +1,25 @@
 from pathlib import Path
 from datetime import datetime
+from tkinter import filedialog
 import json
+import sys
 
 pasta_script = Path(__file__).parent
 caminho_dict = pasta_script / "config.json"
+caminhos_ignorados = pasta_script / ".orgignore"
 
-with open(caminho_dict, "r") as arquivo:
+with open(caminho_dict, "r", encoding="utf-8") as arquivo:
      arquivos = json.load(arquivo)
 
-caminho = input("Digite o caminho da pasta que deseja organizar: ")
+caminho = filedialog.askdirectory(title="Selecione a Pasta que deseja organizar")
+if not caminho:
+    print("Você nao escolheu nenhuma Pasta")
+    sys.exit()
+
 pasta = Path(caminho)
-while not pasta.exists() or not pasta.is_dir():
-    if not pasta.exists():
-        print("O caminho informado não existe.")
-    elif not pasta.is_dir():
-        print("O caminho informado não é uma pasta.")
-    caminho = input("Digite o caminho da pasta que deseja organizar: ")
-    pasta = Path(caminho)
-     
+
+with open(caminhos_ignorados, "r", encoding="utf-8") as arq:    
+    arquivos_ignorados = set(arq.read().splitlines())
 
 
 contador_categorias = {}
@@ -67,11 +69,15 @@ def registrar_log(arquivo,destino, caminho_log, status):
      with open(caminho_log, "a") as log:
           log.write(arquivo_log)  
 
-for arquivo in pasta.glob("*"):
+for arquivo in pasta.rglob("*"):
     if arquivo.is_dir():
         continue
+    if arquivo.name in arquivos_ignorados:
+         continue
     destino = descobrir_destino(arquivo, arquivos)
     pasta_destino = pasta / destino
+    if arquivo.parent == pasta_destino:
+         continue
 
     arquivo_destino = gerar_nome_duplicados(arquivo, pasta_destino)
     pasta_destino.mkdir(exist_ok=True, parents=True)
