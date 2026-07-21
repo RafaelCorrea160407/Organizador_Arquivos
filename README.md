@@ -1,82 +1,88 @@
 # 📂 Organizador de Arquivos
 
-Projeto desenvolvido em **Python** com o objetivo de praticar lógica de programação, manipulação de arquivos e uso da biblioteca `pathlib`.
+> Um organizador de arquivos desenvolvido em **Python** que classifica automaticamente arquivos por categoria, cria pastas, evita arquivos duplicados e gera um relatório da organização.
 
-O programa organiza automaticamente os arquivos de uma pasta, separando-os em categorias de acordo com suas extensões e criando as pastas necessárias quando elas ainda não existem.
+## 🎬 Demonstração
+
+![Demonstração](images/demo.gif)
 
 ---
 
 ## ✨ Funcionalidades
 
-- Organiza arquivos automaticamente por categoria.
-- Cria as pastas de destino automaticamente.
-- Move cada arquivo para sua respectiva pasta.
-- Arquivos com extensões desconhecidas são enviados para a pasta **Outros**.
-- Exibe mensagens informando cada arquivo organizado.
-- Exibe um resumo da quantidade de arquivos organizados por categoria.
-
----
-
-## 📁 Categorias suportadas
-
-- 🖼️ Imagens
-- 📄 Documentos
-- 📕 PDFs
-- 📊 Planilhas
-- 🎵 Áudios
-- 🎥 Vídeos
-- 📦 Compactados
-- 🐍 Python
-- ☕ Java
-- 📜 JavaScript
-- 🔷 TypeScript
-- 🌐 HTML
-- 🎨 CSS
-- ➕ C++
-- ⚙️ C
-- 💜 C#
-- 🐘 PHP
-- 🔧 JSON
-- 🧩 XML
-- 🗄️ SQL
-- 📝 Markdown
-- 💻 Executáveis
-- 📂 Outros
+- 📁 Seleção da pasta por interface gráfica.
+- 🔄 Organização automática dos arquivos por extensão.
+- 📂 Organização recursiva (incluindo subpastas).
+- 🗂️ Criação automática das pastas de destino.
+- ⚙️ Configuração personalizada através do `config.json`.
+- 🚫 Suporte ao arquivo `.orgignore` para ignorar arquivos específicos.
+- 📄 Geração automática de logs da organização.
+- 🔢 Tratamento de arquivos duplicados.
+- 📊 Resumo da organização ao final do processo.
 
 ---
 
 ## 🛠️ Tecnologias utilizadas
 
-- Python 3
+- Python 3.14
 - pathlib
+- tkinter
+- json
+- PyInstaller
 
 ---
 
-## ▶️ Como executar
+## 📁 Estrutura do projeto
 
-1. Clone este repositório:
-
-```bash
-git clone https://github.com/seu-usuario/Organizador_Arquivos.git
+```text
+Organizador_Arquivos/
+│
+├── dist/
+│   ├── org.exe
+│   ├── config.json
+│   ├── .orgignore
+│   └── log.txt
+│
+├── org.py
+├── README.md
+├── requirements.txt
+└── testes/
 ```
 
-2. Entre na pasta do projeto:
+---
+
+## 🚀 Como utilizar
+
+### Opção 1 — Executável
+
+1. Baixe a versão mais recente na página de **Releases**.
+2. Execute `org.exe`.
+3. Selecione a pasta que deseja organizar.
+4. Aguarde a conclusão da organização.
+
+---
+
+### Opção 2 — Código fonte
+
+Clone o repositório:
+
+```bash
+git clone https://github.com/SEU-USUARIO/Organizador_Arquivos.git
+```
+
+Entre na pasta:
 
 ```bash
 cd Organizador_Arquivos
 ```
 
-3. Abra o arquivo `org.py`.
+Instale as dependências:
 
-4. Altere o caminho da variável:
-
-```python
-pasta = Path("CAMINHO_DA_PASTA")
+```bash
+pip install -r requirements.txt
 ```
 
-para a pasta que deseja organizar.
-
-5. Execute o programa:
+Execute:
 
 ```bash
 python org.py
@@ -84,45 +90,102 @@ python org.py
 
 ---
 
-## 📷 Exemplo de saída
+## ⚙️ Configuração
+
+O comportamento do programa pode ser personalizado através do arquivo `config.json`.
+
+Exemplo:
+
+```json
+{
+    ".png": "Imagens",
+    ".jpg": "Imagens",
+    ".jpeg": "Imagens",
+    ".gif": "Imagens",
+
+    ".pdf": "PDFs",
+
+    ".mp4": "Vídeos",
+    ".avi": "Vídeos",
+
+    ".mp3": "Músicas"
+}
+```
+
+Basta adicionar novas extensões ou criar novas categorias.
+
+---
+
+## 🚫 Arquivos ignorados
+
+Arquivos presentes no `.orgignore` não serão organizados.
+
+Exemplo:
 
 ```text
-✔ Arquivo Organizado com Sucesso!
-Arquivo: foto.png
-Pasta: Imagens
-
-✔ Arquivo Organizado com Sucesso!
-Arquivo: currículo.pdf
-Pasta: PDFs
-
-✔ Arquivo Organizado com Sucesso!
-Arquivo: música.mp3
-Pasta: Áudios
-
-Resumo por categoria:
-
-Imagens: 3
-PDFs: 2
-Áudios: 1
-Outros: 1
+config.json
+.orgignore
+log.txt
 ```
 
 ---
 
-## 🎯 Objetivo do projeto
+## 📸 Exemplo
 
-Este projeto foi desenvolvido para fortalecer meus conhecimentos em Python, praticando conceitos fundamentais como:
+### Antes
 
-- Manipulação de arquivos
-- Dicionários
-- Estruturas condicionais
-- Estruturas de repetição
-- Contadores
-- Organização de código
-- Biblioteca `pathlib`
+```text
+Downloads/
+│
+├── foto.png
+├── contrato.pdf
+├── video.mp4
+└── musica.mp3
+```
 
-Além disso, este projeto faz parte do meu plano de estudos para me preparar para oportunidades de estágio em desenvolvimento Backend.
+### Depois
+
+```text
+Downloads/
+│
+├── Imagens/
+│   └── foto.png
+│
+├── PDFs/
+│   └── contrato.pdf
+│
+├── Vídeos/
+│   └── video.mp4
+│
+└── Músicas/
+    └── musica.mp3
+```
 
 ---
 
-⭐ Este projeto faz parte da minha jornada de estudos em Python e Desenvolvimento Backend. Sugestões e feedbacks são sempre bem-vindos!
+## 📚 Aprendizados
+
+Durante o desenvolvimento deste projeto foram praticados diversos conceitos importantes da linguagem Python, como:
+
+- Manipulação de arquivos e diretórios.
+- Uso da biblioteca `pathlib`.
+- Estruturas de dados.
+- Manipulação de arquivos JSON.
+- Tratamento de exceções.
+- Organização de código em funções.
+- Interface gráfica utilizando Tkinter.
+- Geração de executáveis com PyInstaller.
+- Boas práticas de organização de projetos.
+
+---
+
+## 👨‍💻 Autor
+
+**Rafael Correa Soares Nogueira**
+
+- GitHub: https://github.com/RafaelCorrea160407
+- LinkedIn: https://www.linkedin.com/in/rafaelcorreasoaresnogueira
+
+---
+
+⭐ Se este projeto foi útil para você, deixe uma estrela no repositório!

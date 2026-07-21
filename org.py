@@ -1,10 +1,14 @@
 from pathlib import Path
 from datetime import datetime
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 import json
 import sys
+def obter_pasta_script():
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).parent
+    return Path(__file__).parent
 
-pasta_script = Path(__file__).parent
+pasta_script = obter_pasta_script()
 caminho_dict = pasta_script / "config.json"
 caminhos_ignorados = pasta_script / ".orgignore"
 
@@ -23,7 +27,7 @@ with open(caminhos_ignorados, "r", encoding="utf-8") as arq:
 
 
 contador_categorias = {}
-caminho_log = pasta_script / "log.txt"
+caminho_log = pasta / "log.txt"
 def descobrir_destino(arquivo, arquivos):
         sufixo = arquivo.suffix
         destino = arquivos.get(sufixo)
@@ -52,13 +56,24 @@ def atualizar_resumo(destino):
 
 def mostrar_resumo():
     if not contador_categorias:
-        print("Nenhum arquivo encontrado para organizar.")
+        messagebox.showinfo(
+            "Organizador de Arquivos",
+            "Nenhum arquivo encontrado para organizar."
+        )
         return
 
-    print("\nResumo por categoria:")
+    total = sum(contador_categorias.values())
+
+    resumo = "Organização concluída com sucesso!\n\n"
+    resumo += "Resumo por categoria:\n\n"
 
     for categoria, quantidade in contador_categorias.items():
-        print(f"{categoria}: {quantidade}")
+        resumo += f"{categoria}: {quantidade}\n"
+
+    resumo += f"\nTotal de arquivos organizados: {total}"
+    resumo += f"\n\nLog salvo em:\n{caminho_log}"
+
+    messagebox.showinfo("Organizador de Arquivos", resumo)
 
 def registrar_log(arquivo,destino, caminho_log, status):
      agora = datetime.now()
